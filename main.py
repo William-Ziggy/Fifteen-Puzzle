@@ -1,4 +1,5 @@
 from tkinter import *
+import random
 
 class Tile():
 
@@ -61,12 +62,28 @@ offset = (winSize-4*tileSize)/2
 
 tiles = []
 n = 1
-
+numbers = random.sample(range(1, 16), 15)
 for j in range(4):
     for i in range(4):
         if n==16: break
-        tiles.append(Tile(i, j, n))
+
+        tiles.append(Tile(i, j, numbers[n-1]))
+
         n+=1
+
+
+def correctList(cM):
+    global tiles
+
+    temp = []
+    n = 0
+    for j in range(4):
+        for i in range(4):
+            if [i, j] != cM:
+                for obj in tiles:
+                    if obj.x == i and obj.y == j:
+                        temp.append(obj)
+    tiles = temp
 
 
 cM = [3, 3]
@@ -112,8 +129,10 @@ def leftClick(event):
             cM = [markedTile.x, markedTile.y]
             markedTile.setPos(currentX, currentY)
             markedTile.setMarked(False)
-            print(cM)
             markedTile = None
+
+            correctList(cM)
+
         elif markedTile!=None and currentTile!=None: #Avmarkera
             markedTile.setMarked(False)
             markedTile=None
