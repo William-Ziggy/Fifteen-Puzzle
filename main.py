@@ -45,6 +45,24 @@ class Tile():
             canvas.itemconfig(self.tile, fill="white")
 
 
+def numberOfInv(tiles):
+    inv = 0
+    for i in range(0, len(tiles)-1):
+        if tiles[i].num > tiles[i+1].num:
+            inv+=1
+
+    return inv
+
+def isSolvable(tiles):
+
+    if tiles == []: return False
+
+    inv = numberOfInv(tiles)
+    print(inv)
+    if inv % 2 == 0:
+        return True
+    else:
+        return False
 
 root = Tk()
 root.title("Fifteen")
@@ -60,16 +78,21 @@ canvas.pack()
 tileSize = 100
 offset = (winSize-4*tileSize)/2
 
-tiles = []
-n = 1
-numbers = random.sample(range(1, 16), 15)
-for j in range(4):
-    for i in range(4):
-        if n==16: break
 
-        tiles.append(Tile(i, j, numbers[n-1]))
+while True:
+    n = 1
+    tiles = []
+    numbers = random.sample(range(1, 16), 15)
 
-        n+=1
+    for j in range(4):
+        for i in range(4):
+            if n==16: break
+
+            tiles.append(Tile(i, j, numbers[n-1]))
+
+            n+=1
+
+    if isSolvable(tiles): break
 
 
 def correctList(cM):
